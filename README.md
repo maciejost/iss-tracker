@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ISS-Tracker
 
-## Getting Started
+En app som skal fungere som en innføring i frontendteknologier vi bruker i BM-Kjøp.
 
-First, run the development server:
+Det vi skal lage er en applikasjon som henter posisjonen til den internasjonale romstasjonen, proxye denne via Next sitt API til frontenden, og vise denne på et kart fra Leaflet. For å få jobbet med skjemaer, som vi kommer til å ha en haug av i løsningen, vil vi også implementere et skjema der brukeren kan legge inn adresser, og se hvor langt unna romstasjoner disse er.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+## API'er og pakker
+
+http://open-notify.org/Open-Notify-API/ISS-Location-Now/ - API'et til romstasjonen
+
+https://leafletjs.com/ - Leaflet.js med dokumentasjon
+
+https://geocode.maps.co/ - API som gjør adresser om til koordinater
+
+https://nerdcave.com/tailwind-cheat-sheet - Cheat sheet for tailwind
+
+
+## Teknisk implementasjon
+### Sider
+* En rot-layout som huser header og footer
+* En forside på `/` som fungerer som en innføring i løsningen
+* En side på `/tracker/` som viser kartet med gjeldende posisjon, og skjema for input av adresser
+* En `GET`-route på `/api/iss-location` som returnerer lenge- og breddegrad av typen `Coordinates`
+* En `GET`-route på `/api/coordinates` som returnerer lengde- og breddegrad av typen Coordinates
+
+### Komponenter
+* Komponent for skjemaet
+* Komponent som viser frem adresser brukeren har skrevet inn
+* Kart-komponent som henter posisjonen til romstasjonen, og viser denne på kartet. Kart-komponenten skal også ta i mot en prop `addressArray` av typen `AddressWithCoords[]` som er alle adresser brukeren har ført inn i skjemaet.
+
+### Typer
+```ts
+type Address = {
+	street: string
+	postalCode: number
+	country: string
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```ts
+type Coordinates = {
+	lat: number
+	lon: number
+}
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```ts
+type AddressWithCoords = Address & Coordinates
+```
