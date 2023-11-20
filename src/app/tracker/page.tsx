@@ -15,7 +15,7 @@ export default function Tracker() {
  });
 
  async function getCoordinates() {
-  const data = await fetch("http://localhost:3000/api/iss-location");
+  const data = await fetch("http://localhost:3002/api/iss-location");
   const coordinates = await data.json() as Coordinates;
   return coordinates;
  }
@@ -34,7 +34,8 @@ export default function Tracker() {
  }, []);
 
  return (
-  <div className=" h-96">
+  <div className=" h-96 max-w-4xl mx-auto">
+    <h1 className="text-4xl text-center my-5">ISS Tracker</h1>
    <Map
     coordinates={coordinates}
    />
