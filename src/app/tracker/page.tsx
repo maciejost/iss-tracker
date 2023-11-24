@@ -15,7 +15,7 @@ export default function Tracker() {
  });
 
  async function getCoordinates() {
-  const data = await fetch("http://localhost:3002/api/iss-location");
+  const data = await fetch("/api/iss-location");
   const coordinates = await data.json() as Coordinates;
   return coordinates;
  }
